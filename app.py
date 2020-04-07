@@ -5,6 +5,13 @@ from invalid_usage import InvalidUsage
 
 app = Flask(__name__, static_url_path='/static')
 
+def input_check(name, mail, message):
+    name_check = len(name) > 50
+    mail_check = True
+    message_check = len(message) > 1000
+    pass
+    return name_check and mail_check and message_check
+
 @app.errorhandler(InvalidUsage)
 def handle_invalid_usage(error):
     response = jsonify(error.to_dict())
@@ -27,8 +34,9 @@ def send_message():
         email = request.form['email']
         name = request.form['name']
         message = request.form['message']
-        if len(name) > 50:
-            raise InvalidUsage('Invalide name', status_code=410)
+        a = input_chek(name, mail, message)
+           # raise InvalidUsage('Invalide name', status_code=410)
+
         return 'OK POST'
     else:
         return 'OK GET'
