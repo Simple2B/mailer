@@ -10,8 +10,8 @@ app = Flask(__name__, static_url_path='/static')
 def input_check(name, mail, message):
 
     regex = '^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$'
-    
-    mail_check = re.search(regex,email
+
+    mail_check = re.search(regex,email)
     name_check = len(name) > 50
     message_check = len(message) > 1000
     pass
