@@ -2,12 +2,17 @@ from flask import Flask, url_for
 from flask import request
 from flask import jsonify
 from invalid_usage import InvalidUsage
+import re
 
 app = Flask(__name__, static_url_path='/static')
 
+
 def input_check(name, mail, message):
+
+    regex = '^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$'
+    
+    mail_check = re.search(regex,email
     name_check = len(name) > 50
-    mail_check = True
     message_check = len(message) > 1000
     pass
     return name_check and mail_check and message_check
