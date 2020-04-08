@@ -3,25 +3,29 @@ from flask import request
 from flask import jsonify
 from invalid_usage import InvalidUsage
 import re
+from consts import MAX_NAME_LEN, MAX_MESSAGE_LEN
 
 app = Flask(__name__, static_url_path='/static')
 
 
-def input_check(name, mail, message):
+def input_check(name, email, message):
+    regex = r'^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$'
 
-    regex = '^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$'
+    if re.search(regex,email) is None:
+        return 'invalid email'
+    if len(message) > MAX_MESSAGE_LEN:
+        return 'long message'
+    if len(name) > MAX_NAME_LEN:
+        return 'long name'
+    return None
 
-    mail_check = re.search(regex,email)
-    name_check = len(name) > 50
-    message_check = len(message) > 1000
-    pass
-    return name_check and mail_check and message_check
 
 @app.errorhandler(InvalidUsage)
 def handle_invalid_usage(error):
     response = jsonify(error.to_dict())
     response.status_code = error.status_code
     return response
+
 
 @app.route('/')
 def hello_world():
@@ -39,9 +43,9 @@ def send_message():
         email = request.form['email']
         name = request.form['name']
         message = request.form['message']
-        a = input_chek(name, mail, message)
-           # raise InvalidUsage('Invalide name', status_code=410)
-
+        error = input_check(name, email, message)
+        if error:
+            raise InvalidUsage(error, status_code=410)
         return 'OK POST'
     else:
         return 'OK GET'
