@@ -3,7 +3,7 @@ from flask import request
 from flask import jsonify
 from invalid_usage import InvalidUsage
 import re
-from consts import MAX_NAME_LEN, MAX_MESSAGE_LEN
+from const import MAX_NAME_LEN, MAX_MESSAGE_LEN
 
 app = Flask(__name__, static_url_path='/static')
 

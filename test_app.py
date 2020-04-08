@@ -3,7 +3,7 @@ import tempfile
 
 import pytest
 from app import app
-from consts import MAX_MESSAGE_LEN
+from const import MAX_MESSAGE_LEN
 
 @pytest.fixture
 def client():
