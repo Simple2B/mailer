@@ -1,3 +1,7 @@
+import re
+from const import MAX_NAME_LEN, MAX_MESSAGE_LEN
+
+
 class InvalidUsage(Exception):
     status_code = 400
 
@@ -12,3 +16,14 @@ class InvalidUsage(Exception):
         rv = dict(self.payload or ())
         rv['message'] = self.message
         return rv
+
+
+def input_check(name, email, message):
+    pattern = r'^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$'
+
+    if re.search(pattern, email) is None:
+        raise InvalidUsage('invalid email')
+    if len(message) > MAX_MESSAGE_LEN:
+        raise InvalidUsage('long message')
+    if len(name) > MAX_NAME_LEN:
+        raise InvalidUsage('long name')
