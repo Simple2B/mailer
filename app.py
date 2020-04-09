@@ -2,8 +2,8 @@ from flask import Flask
 from flask import request
 from flask import jsonify
 from invalid_usage import input_check, InvalidUsage
-from work_mailer import Work_mailer
-from format_mailer import Format_mailer
+from work_mailer import WorkMailer
+from format_mailer import FormatMailer
 
 
 app = Flask(__name__, static_url_path='/static')
@@ -33,12 +33,7 @@ def send_message():
     message = request.form['message']
     input_check(name, email, message)
 
-    try:
-        if not app.config['TESTING']:
-            Work_mailer.send(email, name, message)
-        else:
-            Format_mailer.send(email, name, message)
-    except NotImplementedError:
-        print('not ok')
+    mailer = WorkMailer(email, name, message) if not app.config['TESTING'] else FormatMailer(email, name, message)
+    mailer.send()
 
     return 'OK'

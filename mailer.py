@@ -1,7 +1,11 @@
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
 import json
 import datetime
+import pathlib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from invalid_usage import InvalidUsage
+
+PATH_TO_SETTINGS_FILE = pathlib.Path(__file__).parent.absolute().joinpath('settings.json')
 
 
 class Mailer(object):
@@ -9,20 +13,17 @@ class Mailer(object):
         self.email = email
         self.name = name
         self.message = message
-
-    def form_message(email, name, message):
-        # open json file and read params
-        with open('mailer_settings.json', 'r') as preferences:
-            data = json.load(preferences)
-            data = dict(data)
-            data['user_message']
-        msg = MIMEMultipart()
-        msg['From'] = data['from_email']
-        msg['To'] = data['to_email']
-        msg['Subject'] = data['subject'] + ' ' + str(datetime.datetime.now().strftime("%d-%m-%Y %H:%M"))
-        form_message = data['user_message'].format(name=name, email=email, message=message)
-        msg.attach(MIMEText(form_message, 'plain'))
-        return msg.as_string()
-
-    def send():
-        raise NotImplementedError
+        # Read preferences
+        self.settings = None
+        with open(PATH_TO_SETTINGS_FILE, 'r') as f:
+            self.settings = json.load(f)
+        if not self.settings:
+            raise InvalidUsage('Bad settings file')
+        self.msg = MIMEMultipart()
+        self.msg['From'] = self.settings['from_email']
+        self.msg['To'] = self.settings['to_email']
+        date = datetime.datetime.now().strftime("%d.%m.%Y %H:%M:%S")
+        self.msg['Subject'] = self.settings['subject'].format(date=date, name=name)
+        letter_text = self.settings['letter_template'].format(
+            date=date, name=name, email=email, message=message)
+        self.msg.attach(MIMEText(letter_text, 'plain'))

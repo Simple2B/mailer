@@ -11,10 +11,6 @@ def client():
         yield client
 
 
-def test_smtp_mailer(client):
-    pass
-
-
 def test_post_messages(client):
     """Test that messages work."""
     data = {
