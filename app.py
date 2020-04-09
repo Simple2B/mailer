@@ -38,6 +38,7 @@ def send_message():
             Work_mailer.send(email, name, message)
         else:
             Format_mailer.send(email, name, message)
-    except: 
+    except NotImplementedError:
+        print('not ok')
 
     return 'OK'

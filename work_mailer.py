@@ -13,7 +13,6 @@ def send(name, email, message):
     with open('mailer_settings.json', 'r') as preferences:
         data = json.load(preferences)
         data = dict(data)
-
         server = smtplib.SMTP(data['server'], 587)  # Connect to the server
         server.starttls()  # Use TLS
         server.login(data['from_email'], data['passw'])  # Login to the email server
