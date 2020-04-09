@@ -15,7 +15,6 @@ def client():
 
 
 def test_send_message(client):
-    """Start with a blank database."""
 
     rv = client.get('/send_message')
     assert b'OK GET' in rv.data
