@@ -4,6 +4,8 @@ from flask import jsonify
 from invalid_usage import InvalidUsage
 import re
 from const import MAX_NAME_LEN, MAX_MESSAGE_LEN
+import smtplib
+from my_secur import MY_MAIL, MY_PASSW
 
 app = Flask(__name__, static_url_path='/static')
 
@@ -46,6 +48,13 @@ def send_message():
         error = input_check(name, email, message)
         if error:
             raise InvalidUsage(error, status_code=410)
+        
+        message_to_send = 'HI, {} we\'re glad you have such a good idea. '.format(name)
+        server = smtplib.SMTP('smtp.gmail.com', 587) # Connect to the server
+        server.starttls() # Use TLS
+        server.login(MY_MAIL, MY_PASSW) # Login to the email server
+        server.sendmail(MY_MAIL, email , message_to_send) # Send the email
+        server.quit() # Logout of the email server
         return 'OK POST'
     else:
         return 'OK GET'
