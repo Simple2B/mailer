@@ -8,7 +8,11 @@
             "name": "pytest",
             "type": "python",
             "request": "launch",
-            "module": "pytest"
+            "module": "pytest",
+            "args": [
+                "-s",
+                "test_app.py::test_post_messages"
+            ]
         },
         {
             "name": "debug",

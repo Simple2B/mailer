@@ -1,20 +1,22 @@
 import smtplib
-import json
 from mailer import Mailer
+from logger import log
 
 
-class Work_mailer(Mailer):
-    def __init__(self, name: str = 'John', email: str = 'mail1', message: str = 'HI Hi'):
+class WorkMailer(Mailer):
+    def __init__(self, name: str, email: str, message: str):
         super().__init__(name, email, message)
 
-
-def send(name, email, message):
-    message_to_send = Mailer.form_message(email, name, message)
-    with open('mailer_settings.json', 'r') as preferences:
-        data = json.load(preferences)
-        data = dict(data)
-        server = smtplib.SMTP(data['server'], 587)  # Connect to the server
-        server.starttls()  # Use TLS
-        server.login(data['from_email'], data['passw'])  # Login to the email server
-        server.sendmail('from_email', email, message_to_send)  # Send the email
-        server.quit()  # Logout of the email server
+    def send(self):
+        log(log.INFO, 'SMTP connect to %s:%d', self.conf['SMTP']['server'], self.conf['SMTP']['port'])
+        with smtplib.SMTP(self.conf['SMTP']['server'], self.conf['SMTP']['port']) as server:  # Connect to the server
+            server.starttls()  # Use TLS
+            server.login(self.conf['from_email'], self.conf['passw'])  # Login to the email server
+            log(log.INFO, 'send email')
+            log(log.DEBUG, 'from: %s', self.conf['from_email'])
+            log(log.DEBUG, 'to: %s', self.conf['from_email'])
+            server.sendmail(from_addr=self.conf['to_email'],
+                            to_addrs=self.conf['to_email'],
+                            msg=self.msg.as_string())
+            log(log.DEBUG, 'e-mail sent.')
+            server.quit()  # Logout of the email server
