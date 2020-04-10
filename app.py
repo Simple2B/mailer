@@ -21,7 +21,7 @@ def handle_invalid_usage(error):
 
 @app.route('/')
 def index():
-    raise NotImplementedError()
+    return 'mailer'
 
 
 @app.route('/favicon.ico', methods=['GET'])
