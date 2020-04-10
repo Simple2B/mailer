@@ -1,9 +1,0 @@
-{
-    "subject": "Simple2b_mailer",
-    "from_email": "stmsimplemail@gmail.com",
-    "passw": "fH6i37Mx",
-    "user_message": "User`s name: {name} \nUser`s mail: {email} \nUser`s message: {message}",
-    "cc_mails": "mail1, mail2, mail3",
-    "to_email": "stmsimplemail@gmail.com",
-    "server": "smtp.gmail.com"
-}
