@@ -7,8 +7,10 @@ class WorkMailer(Mailer):
         super().__init__(name, email, message)
 
     def send(self):
-        with smtplib.SMTP(self.settings['server'], 587) as server:  # Connect to the server
+        with smtplib.SMTP(self.conf['SMTP']['server'], self.conf['SMTP']['port']) as server:  # Connect to the server
             server.starttls()  # Use TLS
-            server.login(self.settings['from_email'], self.settings['passw'])  # Login to the email server
-            server.sendmail('from_email', self.settings['from_email'], self.msg.as_string())  # Send the email
+            server.login(self.conf['from_email'], self.conf['passw'])  # Login to the email server
+            server.sendmail(from_addr=self.conf['from_email'],
+                            to_addrs=self.conf['to_email'],
+                            msg=self.msg.as_string())
             server.quit()  # Logout of the email server
