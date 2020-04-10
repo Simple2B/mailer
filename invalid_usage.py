@@ -1,12 +1,14 @@
 import re
 from const import MAX_NAME_LEN, MAX_MESSAGE_LEN
+from logger import log
 
 
 class InvalidUsage(Exception):
     status_code = 400
 
     def __init__(self, message, status_code=None, payload=None):
-        Exception.__init__(self)
+        super().__init__(self)
+        log(log.ERROR, "InvalidUsage:%s", message)
         self.message = message
         if status_code is not None:
             self.status_code = status_code
@@ -27,3 +29,4 @@ def input_check(name, email, message):
         raise InvalidUsage('long message')
     if len(name) > MAX_NAME_LEN:
         raise InvalidUsage('long name')
+    log(log.DEBUG, 'input parameters verified')

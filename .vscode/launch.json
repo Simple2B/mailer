@@ -10,6 +10,7 @@
             "request": "launch",
             "module": "pytest",
             "args": [
+                "-s",
                 "test_app.py::test_post_messages"
             ]
         },

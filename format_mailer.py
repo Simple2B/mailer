@@ -1,4 +1,8 @@
 from mailer import Mailer
+from logger import log
+
+
+OUT_FILE = 'my_message.txt'
 
 
 class FormatMailer(Mailer):
@@ -6,6 +10,6 @@ class FormatMailer(Mailer):
         super().__init__(name, email, message)
 
     def send(self):
-        with open('my_message.txt', 'w') as mes:
+        with open(OUT_FILE, 'w') as mes:
             mes.write(self.msg.as_string())
-            print(self.msg.as_string())
+            log(log.INFO, 'e-mail text in %s', OUT_FILE)
