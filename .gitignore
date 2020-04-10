@@ -1,2 +1,6 @@
 /.venv/
 __pycache__/
+my_secur.py
+my_message.txt
+settings.json
+config.json

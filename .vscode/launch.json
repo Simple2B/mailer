@@ -5,6 +5,16 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "pytest",
+            "type": "python",
+            "request": "launch",
+            "module": "pytest",
+            "args": [
+                "-s",
+                "test_app.py::test_post_messages"
+            ]
+        },
+        {
             "name": "debug",
             "type": "python",
             "request": "launch",
@@ -15,9 +25,9 @@
                 "FLASK_DEBUG": "1"
             },
             "args": [
-                "run",
-                "--no-debugger",
-                "--no-reload"
+                "run"
+                // "--no-debugger",
+                // "--no-reload"
             ],
             "jinja": true
         }

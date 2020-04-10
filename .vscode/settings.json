@@ -1,6 +1,10 @@
 {
-    "python.pythonPath": ".venv/bin/python",
     "cSpell.words": [
-        "favicon"
-    ]
+        "favicon",
+        "jsonify",
+        "pytest"
+    ],
+    "python.linting.pylintEnabled": false,
+    "python.linting.flake8Enabled": true,
+    "python.linting.enabled": true
 }
