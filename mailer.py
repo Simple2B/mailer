@@ -16,11 +16,12 @@ class Mailer(object):
             data = json.load(preferences)
             data = dict(data)
             data['user_message']
+        now = str(datetime.datetime.now().strftime("%d-%m-%Y %H:%M"))
         msg = MIMEMultipart()
         msg['From'] = data['from_email']
         msg['To'] = data['to_email']
-        msg['Subject'] = data['subject'] + ' ' + str(datetime.datetime.now().strftime("%d-%m-%Y %H:%M"))
-        form_message = data['user_message'].format(name=name, email=email, message=message)
+        msg['Subject'] = data['subject'] + ' ' + now)
+        form_message = data['user_message'].format(name=name, email=email, message=message) + now)
         msg.attach(MIMEText(form_message, 'plain'))
         return msg.as_string()
 
