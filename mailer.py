@@ -22,9 +22,9 @@ class Mailer(object):
         self.msg = MIMEMultipart()
         self.msg['From'] = self.conf['from_email']
         log(log.DEBUG, 'From: %s', self.msg['From'])
-        self.msg['To'] = self.conf['to_email']
+        self.msg['To'] = ', '.join(self.conf['to_email'])
         log(log.DEBUG, 'To: %s', self.msg['To'])
-        self.msg['Cc'] = self.conf['cc_mails']
+        self.msg['Cc'] = ', '.join(self.conf['cc_mails'])
         date = datetime.datetime.now().strftime("%d.%m.%Y %H:%M:%S")
         self.msg['Subject'] = self.conf['subject'].format(date=date, name=name)
         log(log.DEBUG, 'Subject: %s', self.msg['Subject'])
