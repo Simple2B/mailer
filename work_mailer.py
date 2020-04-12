@@ -15,8 +15,9 @@ class WorkMailer(Mailer):
             log(log.INFO, 'send email')
             log(log.DEBUG, 'from: %s', self.conf['from_email'])
             log(log.DEBUG, 'to: %s', self.conf['from_email'])
+            recipients = self.conf['to_email'] + self.conf['cc_mails']
             server.sendmail(from_addr=self.conf['to_email'],
-                            to_addrs=self.conf['to_email'],
+                            to_addrs=recipients,
                             msg=self.msg.as_string())
             log(log.DEBUG, 'e-mail sent.')
             server.quit()  # Logout of the email server
