@@ -1,7 +1,7 @@
 import smtplib
 from mailer import Mailer
 from logger import log
-# from simplebot import SimpleBot
+from simplebot import SimpleBot
 
 
 class WorkMailer(Mailer):
@@ -22,6 +22,6 @@ class WorkMailer(Mailer):
                             msg=self.msg.as_string())
             log(log.DEBUG, 'e-mail sent.')
             server.quit()  # Logout of the email server
-        # bot = SimpleBot(self.conf['telegram']['token'])
-        # tele_mess = self.conf['telegram']['tg_mess_templ'].format(name = self.conf['mailer']['name'])
-        # bot.send_to_channel(tele_mess)
+        bot = SimpleBot(self.conf['telegram']['token'])
+        tele_mess = self.conf['telegram']['tg_mess_templ'].format(name=self.conf['mailer']['name'])
+        bot.send_to_channel(tele_mess)
