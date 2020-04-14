@@ -4,6 +4,7 @@ from flask import jsonify
 from invalid_usage import input_check, InvalidUsage
 from work_mailer import WorkMailer
 from format_mailer import FormatMailer
+from simplebot import SimpleBot
 from logger import log
 
 
@@ -38,7 +39,12 @@ def send_message():
     input_check(name, email, message)
     log(log.INFO, 'got message from:%s(%s)', name, email)
 
+    # sent e-mail
     mailer = WorkMailer(email, name, message) if not app.config['TESTING'] else FormatMailer(email, name, message)
     mailer.send()
+    # send notification to telegram channel
+    if not app.config['TESTING']:
+        bot = SimpleBot()
+        bot.send(name=name)
 
     return 'OK'

@@ -1,31 +1,21 @@
-import json
 import datetime
-import pathlib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-from invalid_usage import InvalidUsage
 from logger import log
+from settings import Settings
 
 
-PATH_TO_CONF_FILE = pathlib.Path(__file__).parent.absolute().joinpath('config.json')
-
-
-class Mailer(object):
+class Mailer(Settings):
     def __init__(self, email, name, message):
+        super().__init__()
         log(log.DEBUG, 'Prepare e-mail')
-        # Read preferences
-        self.conf = None
-        with open(PATH_TO_CONF_FILE, 'r') as f:
-            self.conf = json.load(f)
-        if not self.conf:
-            raise InvalidUsage('Bad settings file')
         self.msg = MIMEMultipart()
         self.msg['From'] = self.conf['mailer']['from_email']
         log(log.DEBUG, 'From: %s', self.msg['From'])
-        self.msg['To'] = self.conf['to_email']
+        self.msg['To'] = ', '.join(self.conf['mailer']['to_email'])
         log(log.DEBUG, 'To: %s', self.msg['To'])
-        self.msg['Cc'] = self.conf['mailer']['cc_mails']
-        self.msg['Bcc'] = self.conf['mailer']['bcc_mails']
+        self.msg['Cc'] = ', '.join(self.conf['mailer']['cc_mails'])
+        self.msg['Bcc'] = ', '.join(self.conf['mailer']['bcc_mails'])
         date = datetime.datetime.now().strftime("%d.%m.%Y %H:%M:%S")
         self.msg['Subject'] = self.conf['mailer']['subject'].format(date=date, name=name)
         log(log.DEBUG, 'Subject: %s', self.msg['Subject'])

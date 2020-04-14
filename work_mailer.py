@@ -22,6 +22,4 @@ class WorkMailer(Mailer):
                             msg=self.msg.as_string())
             log(log.DEBUG, 'e-mail sent.')
             server.quit()  # Logout of the email server
-        bot = SimpleBot(self.conf['telegram']['token'])
-        tele_mess = self.conf['telegram']['message_template'].format(name=self.conf['mailer']['name'])
-        bot.send_to_channel(tele_mess)
+

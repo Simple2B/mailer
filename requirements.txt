@@ -2,3 +2,4 @@ Flask>=1.1.2
 pytest
 flake8
 python-telegram-bot>=12.6.1
+pyTelegramBotAPI>=3.6.7
