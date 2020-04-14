@@ -1,13 +1,14 @@
 from flask import Flask
 from flask import request
 from flask import jsonify
+from flask_cors import CORS
 from invalid_usage import input_check, InvalidUsage
 from work_mailer import WorkMailer
 from format_mailer import FormatMailer
 from logger import log
 
-
 app = Flask(__name__, static_url_path='/static')
+CORS(app)
 log.set_level(log.DEBUG)
 log(log.DEBUG, 'start server')
 
