@@ -23,7 +23,7 @@ def handle_invalid_usage(error):
 
 @app.route('/')
 def index():
-    return 'mailer'
+    return app.send_static_file('index.html')
 
 
 @app.route('/favicon.ico', methods=['GET'])
