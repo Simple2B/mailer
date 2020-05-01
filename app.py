@@ -7,6 +7,7 @@ from work_mailer import WorkMailer
 from format_mailer import FormatMailer
 from simplebot import SimpleBot
 from logger import log
+from flask import render_template
 
 app = Flask(__name__, static_url_path='/static')
 CORS(app)
@@ -23,12 +24,7 @@ def handle_invalid_usage(error):
 
 @app.route('/')
 def index():
-    return app.send_static_file('index.html')
-
-
-@app.route('/favicon.ico', methods=['GET'])
-def favicon():
-    return app.send_static_file('favicon.ico')
+    return render_template('index.html')
 
 
 @app.route('/send_message', methods=['POST'])
