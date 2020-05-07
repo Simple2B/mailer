@@ -35,13 +35,15 @@ def send_message():
     message = request.form['message']
     input_check(name, email, message)
     log(log.INFO, 'got message from:%s(%s)', name, email)
+    if request.files:
+        log(log.INFO, 'got file: %s', request.files['file'].filename)
 
     # sent e-mail
     mailer = WorkMailer(email, name, message) if not app.config['TESTING'] else FormatMailer(email, name, message)
     mailer.send()
     # send notification to telegram channel
-    if not app.config['TESTING']:
-        bot = SimpleBot()
-        bot.send(name=name)
+    # if not app.config['TESTING']:
+    #     bot = SimpleBot()
+    #     bot.send(name=name)
 
     return 'OK'
