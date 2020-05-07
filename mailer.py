@@ -3,6 +3,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from logger import log
 from settings import Settings
+from flask import render_template
 
 
 class Mailer(Settings):
@@ -19,6 +20,15 @@ class Mailer(Settings):
         date = datetime.datetime.now().strftime("%d.%m.%Y %H:%M:%S")
         self.msg['Subject'] = self.conf['mailer']['subject'].format(date=date, name=name)
         log(log.DEBUG, 'Subject: %s', self.msg['Subject'])
-        letter_text = (self.conf['mailer']['letter_template']).format(
-            date=date, name=name, email=email, message=message)
-        self.msg.attach(MIMEText(letter_text, 'plain'))
+        day = datetime.datetime.today()
+        data = {
+            "name": name,
+            "email": email,
+            "message": message,
+            "day": day.strftime("%A, %B %d"),
+            "year": day.strftime("%Y")
+        }
+
+        letter_text = render_template("contact_email.html", data=data)
+
+        self.msg.attach(MIMEText(letter_text, 'html'))
