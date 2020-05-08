@@ -8,7 +8,6 @@ from format_mailer import FormatMailer
 from simplebot import SimpleBot
 from logger import log
 from flask import render_template
-import io
 
 app = Flask(__name__, static_url_path='/static')
 CORS(app)
@@ -36,15 +35,14 @@ def send_message():
     name = request.form['name']
     message = request.form['message']
     attachment = request.files['file']
-    print(type(attachment))
     input_check(name, email, message)
     log(log.INFO, 'got message from:%s(%s)', name, email)
     # sent e-mail
     mailer = WorkMailer(email, name, message, attachment) if not app.config['TESTING'] else FormatMailer(email, name, )
     mailer.send()
-    # send notification to telegram channel
-    # if not app.config['TESTING']:
-    #     bot = SimpleBot()
-    #     bot.send(name=name)
+    # send notification to telegram channelH
+    if not app.config['TESTING']:
+        bot = SimpleBot()
+        bot.send(name=name)
 
     return 'OK'
