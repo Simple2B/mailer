@@ -1,12 +1,13 @@
 import datetime
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from email.mime.application import MIMEApplication
 from logger import log
 from settings import Settings
 
 
 class Mailer(Settings):
-    def __init__(self, email, name, message):
+    def __init__(self, email, name, message, f):
         super().__init__()
         log(log.DEBUG, 'Prepare e-mail')
         self.msg = MIMEMultipart()
@@ -20,5 +21,7 @@ class Mailer(Settings):
         self.msg['Subject'] = self.conf['mailer']['subject'].format(date=date, name=name)
         log(log.DEBUG, 'Subject: %s', self.msg['Subject'])
         letter_text = (self.conf['mailer']['letter_template']).format(
-            date=date, name=name, email=email, message=message)
+            date=date, name=name, email=email, message=message, )
         self.msg.attach(MIMEText(letter_text, 'plain'))
+        part = MIMEApplication(f)
+        self.msg.attach(part)
