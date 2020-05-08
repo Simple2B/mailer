@@ -35,15 +35,12 @@ def send_message():
     email = request.form['email']
     name = request.form['name']
     message = request.form['message']
-    f = request.files['file']
-    
-    f = f.read()
-    print(type(f))
+    attachment = request.files['file']
+    print(type(attachment))
     input_check(name, email, message)
     log(log.INFO, 'got message from:%s(%s)', name, email)
-
     # sent e-mail
-    mailer = WorkMailer(email, name, message, f) if not app.config['TESTING'] else FormatMailer(email, name, )
+    mailer = WorkMailer(email, name, message, attachment) if not app.config['TESTING'] else FormatMailer(email, name, )
     mailer.send()
     # send notification to telegram channel
     # if not app.config['TESTING']:

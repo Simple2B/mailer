@@ -4,8 +4,8 @@ from logger import log
 
 
 class WorkMailer(Mailer):
-    def __init__(self, name: str, email: str, message: str, f):
-        super().__init__(name, email, message, f)
+    def __init__(self, name: str, email: str, message: str, attachment):
+        super().__init__(name, email, message, attachment)
 
     def send(self):
         try:

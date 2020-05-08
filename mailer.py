@@ -1,13 +1,14 @@
 import datetime
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-from email.mime.application import MIMEApplication
 from logger import log
 from settings import Settings
+from email.mime.base import MIMEBase
+from email import encoders
 
 
 class Mailer(Settings):
-    def __init__(self, email, name, message, f):
+    def __init__(self, email, name, message, attachment):
         super().__init__()
         log(log.DEBUG, 'Prepare e-mail')
         self.msg = MIMEMultipart()
@@ -23,5 +24,9 @@ class Mailer(Settings):
         letter_text = (self.conf['mailer']['letter_template']).format(
             date=date, name=name, email=email, message=message, )
         self.msg.attach(MIMEText(letter_text, 'plain'))
-        part = MIMEApplication(f)
+        part = MIMEBase("application", "octet-stream")
+        part.set_payload(attachment.read())
+        encoders.encode_base64(part)
+        attach_name = str(attachment.filename)
+        part.add_header("Content-Disposition", "attachment", filename=attach_name)
         self.msg.attach(part)
