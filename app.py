@@ -30,17 +30,17 @@ def index():
 @app.route('/send_message', methods=['POST'])
 def send_message():
     log(log.DEBUG, '/send_message')
-    print(request.args)
     email = request.form['email']
     name = request.form['name']
     message = request.form['message']
-    attachment = request.files['file']
+    attachment = request.files['file'] if 'file' in request.files else None
     input_check(name, email, message)
     log(log.INFO, 'got message from:%s(%s)', name, email)
     # sent e-mail
-    mailer = WorkMailer(email, name, message, attachment) if not app.config['TESTING'] else FormatMailer(email, name, )
+    mailer = WorkMailer(email, name, message, attachment) if not app.config['TESTING'] else FormatMailer(
+        email, name, message)
     mailer.send()
-    # send notification to telegram channelH
+    # send notification to telegram channel
     if not app.config['TESTING']:
         bot = SimpleBot()
         bot.send(name=name)
