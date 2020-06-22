@@ -1,28 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Index</title>
-    <link rel="shortcut icon" type="image/x-icon" href="static/favicon.ico" />
-  </head>
-  <body>
-    <form action="/send_message" method="post">
-      <p>
-        <label for="message">Имя</label>
-        <input type="text" name="name" />
-      </p>
-      <p>
-        <label for="message">Почта</label>
-        <input type="text" name="email" />
-      </p>
-      <p>
-        <label for="message">Сообщение</label>
-        <input type="text" name="message" />
-      </p>
-      <p>
-        <input type="submit" name="Send" />
-        <input type="reset" />
-      </p>
-    </form>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Index</title>
+  <link rel="shortcut icon" type="image/x-icon" href="static/favicon.ico">
+</head>
+
+<body>
+  <form enctype="multipart/form-data" action="/send_message" method="post">
+    <p>
+      <label for="message">Name</label>
+      <input type="text" name="name">
+    </p>
+    <p>
+      <label for="message">Email</label>
+      <input type="text" name="email">
+    </p>
+    <p>
+      <label for="message">Message</label>
+      <input type="text" name="message">
+    </p>
+    <p>
+      <input type="file" name="file">
+    </p>
+    <p>
+      <input type="submit">
+    </p>
+  </form>
+</body>
+
 </html>

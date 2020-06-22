@@ -34,12 +34,13 @@ def send_message():
     email = request.form["email"]
     name = request.form["name"]
     message = request.form["message"]
+    attachment = request.files["file"] if "file" in request.files else None
     input_check(name, email, message)
     log(log.INFO, "got message from:%s(%s)", name, email)
 
     # sent e-mail
     mailer = (
-        WorkMailer(email, name, message)
+        WorkMailer(email, name, message, attachment)
         if not app.config["TESTING"]
         else FormatMailer(email, name, message)
     )
