@@ -3,11 +3,13 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from logger import log
 from settings import Settings
+from email.mime.base import MIMEBase
+from email import encoders
 from flask import render_template
 
 
 class Mailer(Settings):
-    def __init__(self, email, name, message):
+    def __init__(self, email, name, message, attachment):
         super().__init__()
         log(log.DEBUG, 'Prepare e-mail')
         self.msg = MIMEMultipart()
@@ -28,7 +30,12 @@ class Mailer(Settings):
             "day": day.strftime("%A, %B %d"),
             "year": day.strftime("%Y")
         }
-
         letter_text = render_template("contact_email.html", data=data)
-
         self.msg.attach(MIMEText(letter_text, 'html'))
+        part = MIMEBase("application", "octet-stream")
+        if attachment:
+            part.set_payload(attachment.read())
+            encoders.encode_base64(part)
+            attach_name = str(attachment.filename)
+            part.add_header("Content-Disposition", "attachment", filename=attach_name)
+            self.msg.attach(part)
