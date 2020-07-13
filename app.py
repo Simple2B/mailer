@@ -39,11 +39,10 @@ def send_message():
     log(log.INFO, "got message from:%s(%s)", name, email)
 
     # sent e-mail
-    mailer = (
-        WorkMailer(email, name, message, attachment)
-        if not app.config["TESTING"]
-        else FormatMailer(email, name, message)
-    )
+    if not app.config["TESTING"]:
+        mailer = WorkMailer(email, name, message, attachment)
+    else:
+        mailer = FormatMailer(email, name, message)
     mailer.send()
     cfg = Settings()
     if "telegram" in cfg.conf:
