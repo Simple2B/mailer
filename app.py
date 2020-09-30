@@ -1,24 +1,25 @@
+import datetime
 from flask import Flask
 from flask import request
 from flask import jsonify
+from flask import render_template
 from flask_cors import CORS
 from invalid_usage import input_check, InvalidUsage
 from simplebot import SimpleBot
-from logger import log
-from flask import render_template
 from settings import Settings
 from ses import send_email
-import datetime
+from logger import log
 
 
 app = Flask(__name__, static_url_path="/static")
 
+cfg = Settings()
 
-app.config["MAIL_SERVER"] = 'email-smtp.us-east-2.amazonaws.com'
-app.config["MAIL_PORT"] = 587
-app.config["MAIL_USERNAME"] = 'AKIARBQLSALCZLH36JLT'
-app.config["MAIL_PASSWORD"] = 'BC1KRf/k17AShl7uNfN2Lb4a4Nc75jWjj01TdxqqgGsK'
-app.config["MAIL_USE_TLS"] = True
+app.config["MAIL_SERVER"] = cfg.conf["ses"]["MAIL_SERVER"]
+app.config["MAIL_PORT"] = cfg.conf["ses"]["MAIL_PORT"]
+app.config["MAIL_USERNAME"] = cfg.conf["ses"]["MAIL_USERNAME"]
+app.config["MAIL_PASSWORD"] = cfg.conf["ses"]["MAIL_PASSWORD"]
+app.config["MAIL_USE_TLS"] = cfg.conf["ses"]["MAIL_USE_TLS"]
 
 CORS(app)
 log.set_level(log.DEBUG)
@@ -43,7 +44,7 @@ def send_message():
     email = request.form["email"]
     name = request.form["name"]
     message = request.form["message"]
-    flaattachment = request.files["file"] if "file" in request.files else None
+    attachment = request.files["file"] if "file" in request.files else None
     input_check(name, email, message)
     log(log.INFO, "got message from:%s(%s)", name, email)
     day = datetime.datetime.today()
@@ -56,9 +57,8 @@ def send_message():
             "year": day.strftime("%Y")
         }
 
-    cfg = Settings()
 
-    send_email(app, data, flaattachment)
+    send_email(app, data, attachment)
 
     if "telegram" in cfg.conf:
         # send notification to telegram channel
