@@ -19,7 +19,8 @@ class WorkMailer(Mailer):
                 log(log.INFO, 'send email')
                 log(log.DEBUG, 'from: %s', self.conf['mailer']['from_email'])
                 log(log.DEBUG, 'to: %s', self.conf['mailer']['to_email'])
-                recipients = self.conf['mailer']['to_email'] + self.conf['mailer']['cc_mails']
+                recipients = self.conf['mailer']['to_email']
+                #  + self.conf['mailer']['cc_mails']
                 server.sendmail(from_addr=self.conf['mailer']['from_email'],
                                 to_addrs=recipients,
                                 msg=self.msg.as_string())
