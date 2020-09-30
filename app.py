@@ -3,8 +3,10 @@ from flask import request
 from flask import jsonify
 from flask_cors import CORS
 from invalid_usage import input_check, InvalidUsage
+from simplebot import SimpleBot
 from logger import log
 from flask import render_template
+from settings import Settings
 from ses import send_email
 import datetime
 
@@ -33,7 +35,6 @@ def handle_invalid_usage(error):
 @app.route("/")
 def index():
     return render_template("index.html")
-# subject='',, html=''
 
 
 @app.route("/send_message", methods=["POST"])
@@ -55,5 +56,16 @@ def send_message():
             "year": day.strftime("%Y")
         }
 
+    cfg = Settings()
+
     send_email(app, data, flaattachment)
+
+    if "telegram" in cfg.conf:
+        # send notification to telegram channel
+        # if not app.config["TESTING"]:
+        bot = SimpleBot()
+        bot.send(name=name)
+    else:
+        log(log.INFO, "telegram bot not configured")
+
     return "OK"
