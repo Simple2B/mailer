@@ -21,6 +21,7 @@ app.config["MAIL_USERNAME"] = cfg.conf["ses"]["MAIL_USERNAME"]
 app.config["MAIL_PASSWORD"] = cfg.conf["ses"]["MAIL_PASSWORD"]
 app.config["MAIL_USE_TLS"] = cfg.conf["ses"]["MAIL_USE_TLS"]
 
+
 CORS(app)
 log.set_level(log.DEBUG)
 log(log.DEBUG, "start server")
@@ -57,8 +58,7 @@ def send_message():
             "year": day.strftime("%Y")
         }
 
-
-    send_email(app, data, attachment)
+    send_email(app, data, f"Message from: {name}", attachment, cfg)
 
     if "telegram" in cfg.conf:
         # send notification to telegram channel
