@@ -5,3 +5,4 @@ my_message.txt
 settings.json
 config.json
 /.idea/
+.DS_Store

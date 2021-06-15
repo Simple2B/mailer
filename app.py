@@ -21,7 +21,6 @@ app.config["MAIL_USERNAME"] = cfg.conf["ses"]["MAIL_USERNAME"]
 app.config["MAIL_PASSWORD"] = cfg.conf["ses"]["MAIL_PASSWORD"]
 app.config["MAIL_USE_TLS"] = cfg.conf["ses"]["MAIL_USE_TLS"]
 
-
 CORS(app)
 log.set_level(log.DEBUG)
 log(log.DEBUG, "start server")
