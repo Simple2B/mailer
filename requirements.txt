@@ -5,3 +5,4 @@ flask-cors
 python-telegram-bot>=12.6.1
 pyTelegramBotAPI>=3.6.7
 black
+flask-mail

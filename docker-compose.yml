@@ -1,0 +1,9 @@
+version: '3.4'
+
+services:
+  app:
+    build:
+      context: .
+    ports:
+      - 127.0.0.1:7090:5555
+    restart: always
